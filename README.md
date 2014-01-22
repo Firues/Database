@@ -24,7 +24,7 @@ The use of it is simple, here's an example<br/><br/>
 	$results = $db->Query("SELECT FROM users WHERE ID > ?", 5);
 	foreach( $results->fetchAll() as $row )
 	{
-		echo "Username " . $row["username"] . " has the ID " . $row["ID"] . "&lt;br />";
+		echo "Username " . $row["username"] . " has the ID " . $row["ID"] . "<br />";
 	}
 ?>
 ```
