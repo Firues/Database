@@ -143,7 +143,7 @@ class Database implements iDatabase
 		return $this->_db->rollBack(); //use pdo function
 	}
 	
-	/*
+	/**
 	*	error()		-	error function, placeholder for later
 	*	@access private
 	*	@param string $msg	-	error message
