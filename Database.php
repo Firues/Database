@@ -9,6 +9,11 @@ interface iDatabase {
 	public static function getInstance(); //get the instance of Database
 	public function query($query); //run the query
 	public function lastInsertId(); //get the last inserted ID
+	public function beginTransaction(); //begin a transaction ( you need InnoDB for this ), 
+	//read more about transitions here http://www.sitepoint.com/mysql-transactions-php-emulation/
+	public function commit(); // commit to database ( you need InnoDB for this )
+	public function rollBack(); // rollback changes ( you need InnoDB for this )
+	// private function error();	- 	hadles your catched errors (placeholder for later code)
 }
 /**
 * Database - singelton pattern databas class
@@ -47,7 +52,7 @@ class Database implements iDatabase
 			$this->_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // see below
 			//source for charset security issue http://stackoverflow.com/a/12202218 
 		} catch (PDOException $e) {
-			die($e->getMessage()); // here you can call to a own error function if you have
+			$this->error($e->getMessage()); // here you can call to a own error function if you have
 		}
 	}
 	/**
@@ -100,7 +105,7 @@ class Database implements iDatabase
 			return $res; //returns results
 			
 		} catch (PDOException $e) {
-			die($e->getMessage()); // here you can call to a own error function if you have
+			$this->error($e->getMessage()); // here you can call to a own error function if you have
 		}
 	}
 	
@@ -112,6 +117,40 @@ class Database implements iDatabase
 	public function lastInsertId()
 	{
 		return $this->_db->lastInsertId(); //return the last inserted id
+	}
+	
+	/**
+	*	beginTransaction()	-	begin a transaction ( you need InnoDB for this )
+	*/
+	public function beginTransaction()
+	{
+		return $this->_db->beginTransaction(); //use pdo function
+	}
+	
+	/**
+	*	commit()	-	commit to database ( you need InnoDB for this )
+	*/
+	public function commit()
+	{
+		return $this->_db->commit(); //use pdo function
+	}
+	
+	/**
+	*	rollback()	-	rollback changes ( you need InnoDB for this )
+	*/
+	public function rollBack()
+	{
+		return $this->_db->rollBack(); //use pdo function
+	}
+	
+	/*
+	*	error()		-	error function, placeholder for later
+	*	@access private
+	*	@param string $msg	-	error message
+	*/
+	private function error($msg)
+	{
+		die($msg); //die on error
 	}
 }
 ////////////////////////////////////////////////////////////////////////
